@@ -123,6 +123,36 @@ export type Database = {
           },
         ]
       }
+      hero_banners: {
+        Row: {
+          active: boolean
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string
+          subtitle: string
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url: string
+          subtitle?: string
+          title?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string
+          subtitle?: string
+          title?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           created_at: string

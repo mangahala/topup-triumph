@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Gamepad2, ShoppingBag, MapPin, LogIn, LogOut, User, Gift } from "lucide-react";
+import { Search, Gamepad2, ShoppingBag, MapPin, LogIn, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -24,14 +24,6 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <Link to="/steam" className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <Gift className="w-4 h-4" />
-            <span className="hidden lg:inline">Steam</span>
-          </Link>
-          <Link to="/gift-cards" className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <Gift className="w-4 h-4" />
-            <span className="hidden lg:inline">Gift Cards</span>
-          </Link>
           {user && (
             <Link to="/my-orders" className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
               <ShoppingBag className="w-4 h-4" />
