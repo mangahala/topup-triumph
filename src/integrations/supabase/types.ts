@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           amount: number
           created_at: string
+          emoji: string | null
           game_id: string
           id: string
           label: string
@@ -27,6 +28,7 @@ export type Database = {
         Insert: {
           amount: number
           created_at?: string
+          emoji?: string | null
           game_id: string
           id?: string
           label: string
@@ -36,6 +38,7 @@ export type Database = {
         Update: {
           amount?: number
           created_at?: string
+          emoji?: string | null
           game_id?: string
           id?: string
           label?: string
@@ -153,6 +156,36 @@ export type Database = {
         }
         Relationships: []
       }
+      order_proofs: {
+        Row: {
+          created_at: string
+          game_name: string | null
+          id: string
+          order_tracking_id: string
+          proof_url: string
+          user_id: string
+          visible: boolean
+        }
+        Insert: {
+          created_at?: string
+          game_name?: string | null
+          id?: string
+          order_tracking_id: string
+          proof_url: string
+          user_id: string
+          visible?: boolean
+        }
+        Update: {
+          created_at?: string
+          game_name?: string | null
+          id?: string
+          order_tracking_id?: string
+          proof_url?: string
+          user_id?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           created_at: string
@@ -236,6 +269,80 @@ export type Database = {
           },
         ]
       }
+      ott_plans: {
+        Row: {
+          created_at: string
+          duration: string
+          emoji: string | null
+          id: string
+          label: string
+          platform_id: string
+          popular: boolean
+          price: number
+        }
+        Insert: {
+          created_at?: string
+          duration?: string
+          emoji?: string | null
+          id?: string
+          label: string
+          platform_id: string
+          popular?: boolean
+          price: number
+        }
+        Update: {
+          created_at?: string
+          duration?: string
+          emoji?: string | null
+          id?: string
+          label?: string
+          platform_id?: string
+          popular?: boolean
+          price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ott_plans_platform_id_fkey"
+            columns: ["platform_id"]
+            isOneToOne: false
+            referencedRelation: "ott_platforms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ott_platforms: {
+        Row: {
+          active: boolean
+          color: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image: string | null
+          name: string
+          slug: string
+        }
+        Insert: {
+          active?: boolean
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image?: string | null
+          name: string
+          slug: string
+        }
+        Update: {
+          active?: boolean
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image?: string | null
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       payment_methods: {
         Row: {
           active: boolean
@@ -317,6 +424,60 @@ export type Database = {
         }
         Relationships: []
       }
+      rewards: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          id: string
+          title: string
+          xp_cost: number
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          title: string
+          xp_cost: number
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          title?: string
+          xp_cost?: number
+        }
+        Relationships: []
+      }
+      social_profiles: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          label: string | null
+          platform: string
+          url: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          label?: string | null
+          platform: string
+          url: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          label?: string | null
+          platform?: string
+          url?: string
+        }
+        Relationships: []
+      }
       steam_accounts: {
         Row: {
           created_at: string
@@ -350,6 +511,36 @@ export type Database = {
         }
         Relationships: []
       }
+      support_tickets: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          order_id: string | null
+          status: string
+          subject: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          order_id?: string | null
+          status?: string
+          subject: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          order_id?: string | null
+          status?: string
+          subject?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -365,6 +556,30 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      user_xp: {
+        Row: {
+          id: string
+          total_earned: number
+          updated_at: string
+          user_id: string
+          xp_points: number
+        }
+        Insert: {
+          id?: string
+          total_earned?: number
+          updated_at?: string
+          user_id: string
+          xp_points?: number
+        }
+        Update: {
+          id?: string
+          total_earned?: number
+          updated_at?: string
+          user_id?: string
+          xp_points?: number
         }
         Relationships: []
       }

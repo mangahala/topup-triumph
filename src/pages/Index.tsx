@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import HeroSlider from "@/components/HeroSlider";
 import GameCard from "@/components/GameCard";
-import { Gamepad2, Zap, Shield, Clock, Gift, Monitor } from "lucide-react";
+import { Gamepad2, Zap, Shield, Clock, Tv2, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import AgeVerification from "@/components/AgeVerification";
 
 const features = [
   { icon: Zap, label: "Instant Delivery" },
@@ -12,36 +13,34 @@ const features = [
   { icon: Clock, label: "24/7 Support" },
 ];
 
-const categories = [
-  {
-    key: "gift-card",
-    label: "Gift Cards",
-    description: "Google Play, iTunes & More",
-    icon: Gift,
-    gradient: "from-violet-600 to-purple-700",
-    image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&q=80",
-    slug: "gift-cards",
-  },
-  {
-    key: "steam",
-    label: "Steam Gift Cards",
-    description: "Steam Wallet & Game Keys",
-    icon: Monitor,
-    gradient: "from-blue-600 to-cyan-600",
-    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80",
-    slug: "steam",
-  },
-];
-
 const Index = () => {
   const [games, setGames] = useState<any[]>([]);
+  const [ottPlatforms, setOttPlatforms] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [ageVerified, setAgeVerified] = useState(() => {
+    return localStorage.getItem("age_verified") === "true";
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
-    supabase.from("games").select("*").eq("active", true)
-      .then(({ data }) => { setGames(data || []); setLoading(false); });
+    Promise.all([
+      supabase.from("games").select("*").eq("active", true),
+      supabase.from("ott_platforms").select("*").eq("active", true),
+    ]).then(([g, o]) => {
+      setGames(g.data || []);
+      setOttPlatforms(o.data || []);
+      setLoading(false);
+    });
   }, []);
+
+  const handleAgeVerified = () => {
+    localStorage.setItem("age_verified", "true");
+    setAgeVerified(true);
+  };
+
+  if (!ageVerified) {
+    return <AgeVerification onVerified={handleAgeVerified} />;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -57,50 +56,55 @@ const Index = () => {
           ))}
         </div>
 
-        {/* Gift Card & Steam Categories */}
-        <section>
-          <div className="flex items-center gap-2 mb-4">
-            <Gift className="w-5 h-5 text-primary" />
-            <h2 className="font-display text-xl font-bold text-foreground tracking-wide">GIFT CARDS</h2>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            {categories.map(cat => {
-              const Icon = cat.icon;
-              return (
+        {/* OTT Platforms */}
+        {ottPlatforms.length > 0 && (
+          <section>
+            <div className="flex items-center gap-2 mb-4">
+              <Tv2 className="w-5 h-5 text-primary" />
+              <h2 className="font-display text-xl font-bold text-foreground tracking-wide">OTT PLATFORMS</h2>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {ottPlatforms.map(platform => (
                 <button
-                  key={cat.key}
-                  onClick={() => navigate(`/${cat.slug}`)}
-                  className="relative overflow-hidden rounded-2xl h-32 sm:h-40 group text-left"
+                  key={platform.id}
+                  onClick={() => navigate(`/ott/${platform.slug}`)}
+                  className="relative overflow-hidden rounded-2xl aspect-video group text-left"
                 >
-                  <img
-                    src={cat.image}
-                    alt={cat.label}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className={`absolute inset-0 bg-gradient-to-br ${cat.gradient} opacity-75`} />
-                  <div className="absolute inset-0 p-4 flex flex-col justify-end">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Icon className="w-4 h-4 text-white" />
-                      <span className="font-display text-sm sm:text-base font-bold text-white">{cat.label}</span>
-                    </div>
-                    <p className="text-white/70 text-xs">{cat.description}</p>
+                  {platform.image ? (
+                    <img src={platform.image} alt={platform.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  ) : (
+                    <div className={`absolute inset-0 bg-gradient-to-br ${platform.color}`} />
+                  )}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${platform.color} opacity-70`} />
+                  <div className="absolute inset-0 p-3 flex flex-col justify-end">
+                    <span className="font-display text-sm font-bold text-white">{platform.name}</span>
+                    {platform.description && <p className="text-white/70 text-xs truncate">{platform.description}</p>}
                   </div>
                 </button>
-              );
-            })}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Game Top-Ups */}
         <section>
-          <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center gap-2 mb-4">
             <Gamepad2 className="w-5 h-5 text-primary" />
             <h2 className="font-display text-xl font-bold text-foreground tracking-wide">TOP UP NOW</h2>
           </div>
+
+          {/* Warning for game top-ups */}
+          <div className="flex items-start gap-3 bg-destructive/10 border border-destructive/30 rounded-xl p-4 mb-6">
+            <AlertTriangle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
+            <p className="text-sm text-destructive font-medium">
+              ⚠️ We strictly Warned for Topup In Games Purchase — We Care about our Customers. Please ensure your Game ID is correct before placing an order.
+            </p>
+          </div>
+
           {loading ? (
             <p className="text-muted-foreground text-center py-8">Loading games...</p>
           ) : games.length === 0 ? (
-            <p className="text-muted-foreground text-center py-8">No games available yet. Admin needs to add games.</p>
+            <p className="text-muted-foreground text-center py-8">No games available yet.</p>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
               {games.map((game, i) => (
@@ -111,7 +115,7 @@ const Index = () => {
         </section>
 
         <footer className="border-t border-border pt-8 pb-6 text-center">
-          <p className="text-muted-foreground text-sm">© 2026 <span className="font-display text-primary">GAMETOP</span>. All rights reserved.</p>
+          <p className="text-muted-foreground text-sm">© 2026 <span className="font-display text-primary">SUDURTOPUP</span>. All rights reserved.</p>
         </footer>
       </main>
     </div>

@@ -22,20 +22,21 @@ const GameCard = ({ game, index }: GameCardProps) => {
     >
       <Link to={`/checkout/${game.slug}`}>
         <div className="group relative glass rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:neon-glow hover:border-primary/50">
-          <div className="aspect-[3/4] overflow-hidden">
+          {/* 16:9 aspect ratio */}
+          <div className="aspect-video overflow-hidden">
             <img
-              src={game.image || "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=500&fit=crop"}
+              src={game.image || "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=225&fit=crop"}
               alt={game.name}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
           </div>
-          <div className="absolute bottom-0 left-0 right-0 p-4">
-            <h3 className="font-display text-sm font-bold text-foreground tracking-wide">{game.name}</h3>
-            <p className="text-primary text-xs mt-1 font-medium">{game.currency}</p>
-            <div className="mt-2 flex items-center gap-1.5">
-              <span className="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full font-medium">Instant</span>
-              <span className="text-[10px] bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">24/7</span>
+          <div className="p-3">
+            <h3 className="font-display text-xs font-bold text-foreground tracking-wide truncate">{game.name}</h3>
+            <p className="text-primary text-xs mt-0.5 font-medium">{game.currency}</p>
+            <div className="mt-1.5 flex items-center gap-1">
+              <span className="text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded-full font-medium">Instant</span>
+              <span className="text-[9px] bg-secondary text-secondary-foreground px-1.5 py-0.5 rounded-full">24/7</span>
             </div>
           </div>
         </div>
