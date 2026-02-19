@@ -10,8 +10,8 @@ import TrackOrder from "./pages/TrackOrder";
 import MyOrders from "./pages/MyOrders";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
-import SteamStore from "./pages/SteamStore";
-import GiftCards from "./pages/GiftCards";
+import OttCheckout from "./pages/OttCheckout";
+import Rewards from "./pages/Rewards";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,10 +27,10 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/checkout/:slug" element={<Checkout />} />
+            <Route path="/ott/:slug" element={<OttCheckout />} />
             <Route path="/track" element={<TrackOrder />} />
             <Route path="/my-orders" element={<MyOrders />} />
-            <Route path="/steam" element={<SteamStore />} />
-            <Route path="/gift-cards" element={<GiftCards />} />
+            <Route path="/rewards" element={<Rewards />} />
             <Route path="/private" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

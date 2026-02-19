@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Check, Copy, Download, Share2, Upload, Ticket } from "lucide-react";
+import { ArrowLeft, Check, Copy, Download, Share2, Upload, Ticket, Star, AlertTriangle, MessageSquare } from "lucide-react";
 import Header from "@/components/Header";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -103,6 +103,18 @@ const Checkout = () => {
       });
 
       if (error) throw error;
+
+      // Award XP: 1 XP per NPR 10 spent
+      const xpGain = Math.floor(finalPrice / 10);
+      if (xpGain > 0) {
+        const { data: existing } = await supabase.from("user_xp").select("*").eq("user_id", user.id).single();
+        if (existing) {
+          await supabase.from("user_xp").update({ xp_points: existing.xp_points + xpGain, total_earned: existing.total_earned + xpGain, updated_at: new Date().toISOString() }).eq("user_id", user.id);
+        } else {
+          await supabase.from("user_xp").insert({ user_id: user.id, xp_points: xpGain, total_earned: xpGain });
+        }
+      }
+
       setTrackingId(tid);
       setSubmitted(true);
     } catch (err: any) {
@@ -144,21 +156,37 @@ const Checkout = () => {
   const canSubmit = transactionId && screenshot;
 
   if (submitted) {
+    const xpGained = Math.floor(finalPrice / 10);
     return (
       <div className="min-h-screen bg-background">
         <Header />
-        <div className="container mx-auto px-4 py-20 text-center">
+        <div className="container mx-auto px-4 py-16 text-center max-w-md">
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/20 mb-6">
             <Check className="w-10 h-10 text-primary" />
           </motion.div>
           <h1 className="font-display text-2xl font-bold text-foreground mb-2">Order Submitted!</h1>
           <p className="text-muted-foreground mb-4">Your tracking ID:</p>
-          <div className="inline-flex items-center gap-2 bg-muted px-6 py-3 rounded-xl">
+          <div className="inline-flex items-center gap-2 bg-muted px-6 py-3 rounded-xl mb-4">
             <span className="font-display text-xl text-primary font-bold tracking-widest">{trackingId}</span>
             <button onClick={() => navigator.clipboard.writeText(trackingId)}><Copy className="w-4 h-4 text-muted-foreground hover:text-foreground" /></button>
           </div>
-          <p className="text-muted-foreground text-sm mt-6">We'll process your top-up shortly.</p>
-          <button onClick={() => navigate("/")} className="mt-8 bg-primary text-primary-foreground px-6 py-2 rounded-lg font-display text-sm font-semibold">Back to Home</button>
+          {xpGained > 0 && (
+            <div className="flex items-center justify-center gap-2 text-sm font-medium mb-4">
+              <Star className="w-4 h-4 fill-current" style={{ color: 'hsl(var(--primary))' }} />
+              <span className="text-primary">+{xpGained} XP earned!</span>
+            </div>
+          )}
+          <div className="glass rounded-xl p-4 text-left space-y-2 mb-6">
+            <p className="text-sm font-bold text-foreground">📋 Important Notes:</p>
+            <p className="text-sm text-muted-foreground">⏳ Please wait <strong className="text-foreground">30–40 minutes</strong> for your top-up to be processed.</p>
+            <p className="text-sm text-muted-foreground">📸 If diamonds not received, <strong className="text-foreground">screenshot your order details</strong> and submit a support ticket.</p>
+          </div>
+          <div className="flex gap-3">
+            <button onClick={() => navigate("/")} className="flex-1 bg-muted text-foreground py-2 rounded-lg font-display text-sm font-semibold">Home</button>
+            <button onClick={() => navigate("/my-orders")} className="flex-1 bg-primary text-primary-foreground py-2 rounded-lg font-display text-sm font-semibold flex items-center justify-center gap-2">
+              <MessageSquare className="w-4 h-4" /> My Orders
+            </button>
+          </div>
         </div>
       </div>
     );
