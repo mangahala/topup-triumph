@@ -31,7 +31,7 @@ const Header = () => {
                 <span className="hidden lg:inline">Orders</span>
               </Link>
               <Link to="/rewards" className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                <Star className="w-4 h-4 text-yellow-400" />
+                <Star className="w-4 h-4 text-primary fill-primary/30" />
                 <span className="hidden lg:inline">XP</span>
               </Link>
             </>
