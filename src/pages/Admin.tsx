@@ -479,7 +479,7 @@ const Admin = () => {
                     <div className="space-y-2">
                       {game.game_packages?.map((pkg: any) => (
                         <div key={pkg.id} className="flex items-center justify-between bg-muted rounded-lg px-3 py-2 text-sm">
-                          <span className="text-foreground">{pkg.emoji || "💎"} {pkg.label} — NPR {pkg.price}</span>
+                          <span className="text-foreground">{pkg.emoji || "💎"} {pkg.amount} {game.currency} — NPR {pkg.price}</span>
                           <button onClick={() => deleteItem("game_packages", pkg.id)} className="text-destructive hover:text-destructive/80"><Trash2 className="w-3 h-3" /></button>
                         </div>
                       ))}
