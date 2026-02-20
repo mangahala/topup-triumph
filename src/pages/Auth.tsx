@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Gamepad2, Mail, Lock, User } from "lucide-react";
+import { Mail, Lock, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import logo from "@/assets/logo.png";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -44,9 +45,8 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass rounded-2xl p-8 max-w-sm w-full">
-        <div className="flex items-center justify-center gap-2 mb-6">
-          <Gamepad2 className="w-8 h-8 text-primary" />
-          <span className="font-display text-xl font-bold text-foreground">GAME<span className="text-primary">TOP</span></span>
+        <div className="flex flex-col items-center justify-center mb-6">
+          <img src={logo} alt="SudurTopup" className="h-20 w-auto object-contain mb-1" />
         </div>
         <h2 className="font-display text-lg font-bold text-foreground text-center mb-1">
           {isLogin ? "Welcome Back" : "Create Account"}

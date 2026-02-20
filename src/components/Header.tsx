@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Zap, ShoppingBag, MapPin, LogIn, LogOut, Star } from "lucide-react";
+import { Search, ShoppingBag, MapPin, LogIn, LogOut, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
+import logo from "@/assets/logo.png";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -12,9 +13,8 @@ const Header = () => {
   return (
     <motion.header initial={{ y: -100 }} animate={{ y: 0 }} className="sticky top-0 z-50 glass-strong">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
-        <Link to="/" className="flex items-center gap-2">
-          <Zap className="w-7 h-7 text-primary" />
-          <span className="font-display text-lg font-bold text-foreground tracking-wider">SUDUR<span className="text-primary">TOPUP</span></span>
+        <Link to="/" className="flex items-center gap-1">
+          <img src={logo} alt="SudurTopup" className="h-10 w-auto object-contain" />
         </Link>
 
         <div className="hidden md:flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2 w-72">
@@ -31,7 +31,7 @@ const Header = () => {
                 <span className="hidden lg:inline">Orders</span>
               </Link>
               <Link to="/rewards" className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                <Star className="w-4 h-4 text-yellow-400" />
+                <Star className="w-4 h-4 text-primary fill-primary/30" />
                 <span className="hidden lg:inline">XP</span>
               </Link>
             </>
