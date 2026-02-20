@@ -231,7 +231,11 @@ const Checkout = () => {
                     <button key={pkg.id} onClick={() => setSelectedPkg(pkg)}
                       className={`relative rounded-lg p-3 text-center transition-all border ${selectedPkg?.id === pkg.id ? "border-primary bg-primary/10 neon-glow" : "border-border bg-muted hover:border-primary/30"}`}>
                       {pkg.popular && <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[9px] font-bold px-2 py-0.5 rounded-full font-display">POPULAR</span>}
-                      <div className="font-display text-sm font-bold text-foreground">{pkg.label}</div>
+                      <div className="text-2xl mb-1">{(pkg as any).emoji || "💎"}</div>
+                      <div className="font-display text-xs font-bold text-foreground leading-tight">{pkg.amount} {game.currency}</div>
+                      {pkg.label && pkg.label !== String(pkg.amount) && (
+                        <div className="text-[10px] text-muted-foreground mt-0.5 truncate">{pkg.label}</div>
+                      )}
                       <div className="text-primary text-xs font-semibold mt-1">NPR {pkg.price}</div>
                     </button>
                   ))}

@@ -42,9 +42,9 @@ const Rewards = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-8">
       <Header />
-      <div className="container mx-auto px-4 py-6 max-w-2xl">
+      <div className="w-full px-4 py-6 max-w-2xl mx-auto">
         <button onClick={() => navigate("/")} className="flex items-center gap-1 text-muted-foreground hover:text-foreground text-sm mb-4">
           <ArrowLeft className="w-4 h-4" /> Back
         </button>
