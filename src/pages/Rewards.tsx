@@ -42,9 +42,9 @@ const Rewards = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-8">
       <Header />
-      <div className="container mx-auto px-4 py-6 max-w-2xl">
+      <div className="w-full px-4 py-6 max-w-2xl mx-auto">
         <button onClick={() => navigate("/")} className="flex items-center gap-1 text-muted-foreground hover:text-foreground text-sm mb-4">
           <ArrowLeft className="w-4 h-4" /> Back
         </button>
@@ -66,7 +66,7 @@ const Rewards = () => {
                 </div>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Star className="w-4 h-4 text-yellow-400" />
+                <Star className="w-4 h-4 fill-current text-primary" />
                 <span>Total Earned: {xpData?.total_earned || 0} XP</span>
               </div>
               <p className="text-xs text-muted-foreground mt-3 bg-muted/50 rounded-lg p-3">
@@ -96,8 +96,8 @@ const Rewards = () => {
                           <h3 className="font-display text-sm font-bold text-foreground">{reward.title}</h3>
                           {reward.description && <p className="text-xs text-muted-foreground">{reward.description}</p>}
                           <div className="flex items-center gap-1 mt-1">
-                            <Star className="w-3 h-3 text-yellow-400" />
-                            <span className="text-xs font-bold text-yellow-400">{reward.xp_cost} XP</span>
+                            <Star className="w-3 h-3 fill-current text-primary" />
+                            <span className="text-xs font-bold text-primary">{reward.xp_cost} XP</span>
                           </div>
                         </div>
                         <button

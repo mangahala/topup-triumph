@@ -96,11 +96,11 @@ const MyOrders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-8">
       <Header />
-      <div className="container mx-auto px-4 py-8 max-w-2xl">
-        <h1 className="font-display text-2xl font-bold text-foreground mb-2">My Orders</h1>
-        <p className="text-muted-foreground text-sm mb-6">Track and manage your purchases</p>
+      <div className="w-full px-4 py-6 max-w-2xl mx-auto">
+        <h1 className="font-display text-xl font-bold text-foreground mb-1">My Orders</h1>
+        <p className="text-muted-foreground text-xs mb-5">Track and manage your purchases</p>
 
         {loading ? (
           <p className="text-muted-foreground text-center py-8">Loading...</p>
