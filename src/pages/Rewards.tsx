@@ -96,8 +96,8 @@ const Rewards = () => {
                           <h3 className="font-display text-sm font-bold text-foreground">{reward.title}</h3>
                           {reward.description && <p className="text-xs text-muted-foreground">{reward.description}</p>}
                           <div className="flex items-center gap-1 mt-1">
-                            <Star className="w-3 h-3 text-yellow-400" />
-                            <span className="text-xs font-bold text-yellow-400">{reward.xp_cost} XP</span>
+                            <Star className="w-3 h-3 fill-current text-primary" />
+                            <span className="text-xs font-bold text-primary">{reward.xp_cost} XP</span>
                           </div>
                         </div>
                         <button
