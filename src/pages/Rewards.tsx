@@ -66,7 +66,7 @@ const Rewards = () => {
                 </div>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Star className="w-4 h-4 text-yellow-400" />
+                <Star className="w-4 h-4 fill-current text-primary" />
                 <span>Total Earned: {xpData?.total_earned || 0} XP</span>
               </div>
               <p className="text-xs text-muted-foreground mt-3 bg-muted/50 rounded-lg p-3">
