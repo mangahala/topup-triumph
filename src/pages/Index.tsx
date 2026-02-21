@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import HeroSlider from "@/components/HeroSlider";
 import GameCard from "@/components/GameCard";
-import { Gamepad2, Zap, Shield, Clock, Tv2, AlertTriangle } from "lucide-react";
+import { Gamepad2, Zap, Shield, Clock, Tv2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import AgeVerification from "@/components/AgeVerification";

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, ShoppingBag, MapPin, LogIn, LogOut, Star } from "lucide-react";
+import { Search, ShoppingBag, MapPin, LogIn, LogOut, Star, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo.svg";
