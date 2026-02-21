@@ -32,6 +32,7 @@ const App = () => (
             <Route path="/track" element={<TrackOrder />} />
             <Route path="/my-orders" element={<MyOrders />} />
             <Route path="/rewards" element={<Rewards />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/private" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
