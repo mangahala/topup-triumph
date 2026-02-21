@@ -46,7 +46,7 @@ const Admin = () => {
   const [jsonInput, setJsonInput] = useState("");
 
   const [showOttForm, setShowOttForm] = useState(false);
-  const [ottForm, setOttForm] = useState({ name: "", slug: "", description: "", imageUrl: "", color: "from-purple-500 to-pink-600" });
+  const [ottForm, setOttForm] = useState({ name: "", slug: "", description: "", imageUrl: "", color: "from-blue-500 to-indigo-600" });
   const [ottImageFile, setOttImageFile] = useState<File | null>(null);
   const [ottPlanForm, setOttPlanForm] = useState<{ platformId: string; label: string; emoji: string; duration: string; price: string; popular: boolean } | null>(null);
 

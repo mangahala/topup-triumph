@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Check, Tv2, Star } from "lucide-react";
+import { ArrowLeft, Check, Tv2, Star, Phone } from "lucide-react";
 import Header from "@/components/Header";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -21,6 +21,7 @@ const OttCheckout = () => {
 
   const [step, setStep] = useState(0);
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
+  const [whatsappNumber, setWhatsappNumber] = useState("");
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
   const [transactionId, setTransactionId] = useState("");
   const [screenshot, setScreenshot] = useState<File | null>(null);
@@ -45,7 +46,7 @@ const OttCheckout = () => {
 
   const handleSubmit = async () => {
     if (!user) { navigate("/auth"); return; }
-    if (!screenshot) return;
+    if (!screenshot || !whatsappNumber) return;
     setSubmitting(true);
     try {
       const screenshotUrl = await uploadToImgBB(screenshot);
@@ -53,12 +54,13 @@ const OttCheckout = () => {
       const { error } = await supabase.from("orders").insert({
         tracking_id: tid,
         user_id: user.id,
-        player_id: user.email || "ott-user",
+        player_id: whatsappNumber,
         total_price: selectedPlan.price,
         order_type: "ott",
         payment_method_id: selectedPayment,
         screenshot_url: screenshotUrl,
         transaction_id: transactionId,
+        whatsapp_number: whatsappNumber,
       });
       if (error) throw error;
 
@@ -92,16 +94,16 @@ const OttCheckout = () => {
             <Check className="w-10 h-10 text-primary" />
           </motion.div>
           <h1 className="font-display text-2xl font-bold text-foreground mb-2">Order Submitted!</h1>
-          <p className="text-muted-foreground mb-2">Your OTT plan will be delivered soon.</p>
+          <p className="text-muted-foreground mb-2">Your OTT credentials will be sent to your WhatsApp.</p>
           <div className="inline-flex items-center gap-2 bg-muted px-6 py-3 rounded-xl mb-6">
             <span className="font-display text-xl text-primary font-bold">{trackingId}</span>
           </div>
-          <div className="flex items-center justify-center gap-2 text-yellow-400 mb-6">
-            <Star className="w-4 h-4 fill-current" />
-            <span className="text-sm font-medium">+{Math.floor(selectedPlan?.price / 10)} XP earned!</span>
+          <div className="flex items-center justify-center gap-2 text-sm font-medium mb-6">
+            <Star className="w-4 h-4 fill-current text-primary" />
+            <span className="text-primary">+{Math.floor(selectedPlan?.price / 10)} XP earned!</span>
           </div>
           <p className="text-muted-foreground text-sm bg-muted/50 rounded-xl p-4 max-w-sm mx-auto">
-            ⏳ Please wait 30–40 min for delivery. If not received, please screenshot your order details and make a support ticket.
+            ⏳ Please wait 30–40 min for delivery. We'll send the email & password to your WhatsApp: <strong className="text-foreground">{whatsappNumber}</strong>
           </p>
           <button onClick={() => navigate("/")} className="mt-6 bg-primary text-primary-foreground px-6 py-2 rounded-lg font-display text-sm font-semibold">Back to Home</button>
         </div>
@@ -145,7 +147,18 @@ const OttCheckout = () => {
                   </div>
                 )}
               </div>
-              <button disabled={!selectedPlan} onClick={() => setStep(1)}
+
+              {/* WhatsApp Number */}
+              <div className="glass rounded-xl p-5 space-y-3">
+                <h3 className="font-display text-sm font-semibold text-foreground flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-primary" /> Your WhatsApp Number
+                </h3>
+                <p className="text-xs text-muted-foreground">We'll send the OTT email & password to this WhatsApp number.</p>
+                <input placeholder="e.g. 9800000000" value={whatsappNumber} onChange={e => setWhatsappNumber(e.target.value)}
+                  className="w-full bg-muted rounded-lg px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary" />
+              </div>
+
+              <button disabled={!selectedPlan || !whatsappNumber} onClick={() => setStep(1)}
                 className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-display font-bold text-sm disabled:opacity-40">
                 Continue to Payment
               </button>

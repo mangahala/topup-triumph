@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Mail, Lock, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.svg";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);

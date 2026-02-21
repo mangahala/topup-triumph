@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import HeroSlider from "@/components/HeroSlider";
 import GameCard from "@/components/GameCard";
-import { Gamepad2, Zap, Shield, Clock, Tv2, AlertTriangle } from "lucide-react";
+import { Gamepad2, Zap, Shield, Clock, Tv2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import AgeVerification from "@/components/AgeVerification";
@@ -93,13 +93,6 @@ const Index = () => {
             <h2 className="font-display text-xl font-bold text-foreground tracking-wide">TOP UP NOW</h2>
           </div>
 
-          {/* Warning for game top-ups */}
-          <div className="flex items-start gap-3 bg-destructive/10 border border-destructive/30 rounded-xl p-4 mb-6">
-            <AlertTriangle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
-            <p className="text-sm text-destructive font-medium">
-              ⚠️ We strictly Warned for Topup In Games Purchase — We Care about our Customers. Please ensure your Game ID is correct before placing an order.
-            </p>
-          </div>
 
           {loading ? (
             <p className="text-muted-foreground text-center py-8">Loading games...</p>
