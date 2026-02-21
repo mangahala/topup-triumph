@@ -202,7 +202,9 @@ export type Database = {
           total_price: number
           tracking_id: string
           transaction_id: string | null
+          updated_at: string | null
           user_id: string | null
+          whatsapp_number: string | null
         }
         Insert: {
           created_at?: string
@@ -219,7 +221,9 @@ export type Database = {
           total_price: number
           tracking_id: string
           transaction_id?: string | null
+          updated_at?: string | null
           user_id?: string | null
+          whatsapp_number?: string | null
         }
         Update: {
           created_at?: string
@@ -236,7 +240,9 @@ export type Database = {
           total_price?: number
           tracking_id?: string
           transaction_id?: string | null
+          updated_at?: string | null
           user_id?: string | null
+          whatsapp_number?: string | null
         }
         Relationships: [
           {
@@ -372,6 +378,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
           created_at: string
           display_name: string | null
           id: string
@@ -379,6 +386,7 @@ export type Database = {
           whatsapp: string | null
         }
         Insert: {
+          avatar_url?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
@@ -386,6 +394,7 @@ export type Database = {
           whatsapp?: string | null
         }
         Update: {
+          avatar_url?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
@@ -588,6 +597,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cleanup_rejected_orders: { Args: never; Returns: undefined }
       generate_tracking_id: { Args: never; Returns: string }
       has_role: {
         Args: {
