@@ -537,7 +537,7 @@ const Admin = () => {
                     </div>
                     <select value={ottForm.color} onChange={e => setOttForm({ ...ottForm, color: e.target.value })}
                       className="w-full bg-muted rounded-lg px-4 py-2 text-sm text-foreground outline-none focus:ring-1 focus:ring-primary">
-                      <option value="from-purple-500 to-pink-600">Purple → Pink</option>
+                      <option value="from-blue-500 to-indigo-600">Blue → Indigo</option>
                       <option value="from-red-600 to-orange-500">Red → Orange (Netflix)</option>
                       <option value="from-blue-600 to-cyan-500">Blue → Cyan (Disney)</option>
                       <option value="from-green-500 to-teal-600">Green → Teal (Prime)</option>
