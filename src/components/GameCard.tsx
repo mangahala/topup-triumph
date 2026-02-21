@@ -22,8 +22,8 @@ const GameCard = ({ game, index }: GameCardProps) => {
     >
       <Link to={`/checkout/${game.slug}`}>
         <div className="group relative glass rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:neon-glow hover:border-primary/50">
-          {/* 16:9 aspect ratio */}
-          <div className="aspect-video overflow-hidden">
+          {/* 1:1 aspect ratio */}
+          <div className="aspect-square overflow-hidden">
             <img
               src={game.image || "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=225&fit=crop"}
               alt={game.name}

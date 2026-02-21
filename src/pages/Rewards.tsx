@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Star, Zap, Gift, Trophy, ArrowLeft } from "lucide-react";
+import { Star, Zap, Gift, Trophy, ArrowLeft, Sparkles, Users } from "lucide-react";
 import Header from "@/components/Header";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -14,11 +14,14 @@ const Rewards = () => {
   const [xpData, setXpData] = useState<{ xp_points: number; total_earned: number } | null>(null);
   const [rewards, setRewards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [spinning, setSpinning] = useState(false);
+  const [winner, setWinner] = useState<string | null>(null);
+  const [recentWinners, setRecentWinners] = useState<string[]>([]);
 
   useEffect(() => {
     if (!user) return;
     Promise.all([
-      supabase.from("user_xp").select("*").eq("user_id", user.id).single(),
+      supabase.from("user_xp").select("*").eq("user_id", user.id).maybeSingle(),
       supabase.from("rewards").select("*").eq("active", true).order("xp_cost"),
     ]).then(([x, r]) => {
       setXpData(x.data || { xp_points: 0, total_earned: 0 });
@@ -26,6 +29,44 @@ const Rewards = () => {
       setLoading(false);
     });
   }, [user]);
+
+  const spinWheel = () => {
+    if (spinning || rewards.length === 0) return;
+    setSpinning(true);
+    setWinner(null);
+
+    // Random winner algorithm - weighted by xp_cost (cheaper = higher chance)
+    const maxCost = Math.max(...rewards.map(r => r.xp_cost));
+    const weights = rewards.map(r => maxCost - r.xp_cost + 10);
+    const totalWeight = weights.reduce((a, b) => a + b, 0);
+    const rand = Math.random() * totalWeight;
+
+    let cumulative = 0;
+    let selectedIdx = 0;
+    for (let i = 0; i < weights.length; i++) {
+      cumulative += weights[i];
+      if (rand <= cumulative) {
+        selectedIdx = i;
+        break;
+      }
+    }
+
+    // Simulate spinning delay
+    let count = 0;
+    const interval = setInterval(() => {
+      const randomIdx = Math.floor(Math.random() * rewards.length);
+      setWinner(rewards[randomIdx].title);
+      count++;
+      if (count > 15) {
+        clearInterval(interval);
+        const finalWinner = rewards[selectedIdx].title;
+        setWinner(finalWinner);
+        setRecentWinners(prev => [finalWinner, ...prev.slice(0, 4)]);
+        setSpinning(false);
+        toast({ title: "🎉 Prize Result!", description: `${finalWinner} was selected!` });
+      }
+    }, 120);
+  };
 
   if (!user) {
     return (
@@ -73,6 +114,44 @@ const Rewards = () => {
                 💡 Earn XP with every purchase! You get 1 XP for every NPR 10 spent.
               </p>
             </motion.div>
+
+            {/* Lucky Draw / Random Winner */}
+            {rewards.length > 0 && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass rounded-2xl p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Sparkles className="w-5 h-5 text-primary" />
+                  <h2 className="font-display text-lg font-bold text-foreground">Lucky Draw</h2>
+                </div>
+                <p className="text-xs text-muted-foreground mb-4">Try your luck! Spin to see which prize gets highlighted. Contact support to claim.</p>
+
+                <div className="text-center mb-4">
+                  <div className={`inline-block rounded-2xl px-8 py-4 min-w-[200px] ${spinning ? "bg-primary/10 animate-pulse" : winner ? "bg-primary/20" : "bg-muted/50"}`}>
+                    <p className={`font-display text-lg font-bold ${winner ? "text-primary" : "text-muted-foreground"}`}>
+                      {winner || "🎰 Spin to Play"}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={spinWheel}
+                  disabled={spinning}
+                  className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-display font-bold text-sm disabled:opacity-50 transition-opacity"
+                >
+                  {spinning ? "🎰 Spinning..." : "🎲 Spin Now"}
+                </button>
+
+                {recentWinners.length > 0 && (
+                  <div className="mt-4">
+                    <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1"><Users className="w-3 h-3" /> Recent Results:</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {recentWinners.map((w, i) => (
+                        <span key={i} className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-medium">{w}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            )}
 
             {/* Rewards List */}
             <div>

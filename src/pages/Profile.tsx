@@ -21,9 +21,9 @@ const Profile = () => {
   useEffect(() => {
     if (!user) return;
     Promise.all([
-      supabase.from("profiles").select("*").eq("user_id", user.id).single(),
+      supabase.from("profiles").select("*").eq("user_id", user.id).maybeSingle(),
       supabase.from("orders").select("*, games(name), game_packages(label)").eq("user_id", user.id).order("created_at", { ascending: false }),
-      supabase.from("user_xp").select("*").eq("user_id", user.id).single(),
+      supabase.from("user_xp").select("*").eq("user_id", user.id).maybeSingle(),
     ]).then(([p, o, x]) => {
       setProfile(p.data);
       setOrders(o.data || []);

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, ShoppingBag, MapPin, LogIn, LogOut, Star, User } from "lucide-react";
+import { Search, ShoppingBag, LogIn, LogOut, Star, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
-import logo from "@/assets/logo.svg";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -14,7 +13,7 @@ const Header = () => {
     <motion.header initial={{ y: -100 }} animate={{ y: 0 }} className="sticky top-0 z-50 glass-strong">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <Link to="/" className="flex items-center gap-1">
-          <img src={logo} alt="SudurTopup" className="h-10 w-auto object-contain" />
+          <span className="font-display text-lg font-bold text-primary tracking-wide">SUDURTOPUP</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2 w-72">
@@ -26,7 +25,7 @@ const Header = () => {
         <div className="flex items-center gap-3">
           {user && (
             <>
-              <Link to="/profile" className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/profile" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <User className="w-4 h-4" />
                 <span className="hidden lg:inline">Profile</span>
               </Link>
@@ -40,11 +39,6 @@ const Header = () => {
               </Link>
             </>
           )}
-          <button onClick={() => navigate("/track")}
-            className="flex items-center gap-1.5 bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity font-display tracking-wide">
-            <MapPin className="w-4 h-4" />
-            <span className="hidden sm:inline">Track</span>
-          </button>
           {user ? (
             <button onClick={signOut} className="text-muted-foreground hover:text-foreground">
               <LogOut className="w-4 h-4" />
