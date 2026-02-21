@@ -465,7 +465,12 @@ const Admin = () => {
                           className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg px-2 py-1">
                           <FileJson className="w-3 h-3" /> Import JSON
                         </button>
-                        <button onClick={() => deleteItem("games", game.id)} className="text-destructive hover:text-destructive/80 p-1"><Trash2 className="w-4 h-4" /></button>
+                        <button onClick={async () => {
+                          const { error } = await supabase.from("games").update({ active: false }).eq("id", game.id);
+                          if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
+                          toast({ title: "Game deactivated" });
+                          loadData();
+                        }} className="text-destructive hover:text-destructive/80 p-1" title="Deactivate game"><Trash2 className="w-4 h-4" /></button>
                       </div>
                     </div>
                     {showJsonImport === game.id && (
