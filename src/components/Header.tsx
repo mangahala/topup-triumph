@@ -26,6 +26,10 @@ const Header = () => {
         <div className="flex items-center gap-3">
           {user && (
             <>
+              <Link to="/profile" className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <User className="w-4 h-4" />
+                <span className="hidden lg:inline">Profile</span>
+              </Link>
               <Link to="/my-orders" className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <ShoppingBag className="w-4 h-4" />
                 <span className="hidden lg:inline">Orders</span>
